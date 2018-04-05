@@ -50,20 +50,22 @@ class GUI:
         self.filename_field = Entry(window)
         self.filename_field.pack()
 
-        file_extension_label = Label(window, text="Enter file extenstion:")
+        file_extension_label = Label(window, text='File extension:')
         file_extension_label.pack()
-        self.file_extension_field = Entry(window)
-        self.file_extension_field.pack()
+        self.file_extension_field = StringVar()
+        # make sure this is enough file extensions
+        OptionMenu(window, self.file_extension_field, ".jpg", ".png", ".gif").pack()
 
         owner_label = Label(window, text="Enter file owner:")
         owner_label.pack()
         self.owner_field = Entry(window)
         self.owner_field.pack()
 
-        licence_type_label = Label(window, text="Enter licence type:")
+        licence_type_label = Label(window, text='Licence type:')
         licence_type_label.pack()
-        self.licence_type_field = Entry(window)
-        self.licence_type_field.pack()
+        self.licence_type_field = StringVar()
+        # make sure the lisences are correct and in best format for user to pick
+        OptionMenu(window, self.licence_type_field, "Attribution alone", "Attribution + ShareAlike", "Attribution + Noncommercial", "Attribution + NoDerivatives", "Attribution + Noncommercial + ShareAlike", "Attribution + Noncommercial + NoDerivatives").pack()
 
         resolution_label = Label(window, text="Enter image resolution:")
         resolution_label.pack()
