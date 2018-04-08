@@ -87,18 +87,37 @@ class GUI:
         window.mainloop() 
         
     def doSubmit(self):
-        self.recordlist.append(Image(self.image_id_field.get(), self.filename_field.get(), self.file_extension_field.get(), self.owner_field.get(), self.licence_type_field.get(), self.resolution_field.get()))
-        self.ready_to_write = True
+
+        if len(self.image_id_field.get()) >1 or len(self.filename_field.get()) > 1 or len(self.file_extension_field.get()) > 1 or len(self.owner_field.get()) > 1 or len(self.licence_type_field.get()) > 1 or len(self.resolution_field.get()) > 1:
+            try:
+                validate_resolution = int(self.resolution_field.get())
+                self.recordlist.append(Image(self.image_id_field.get(), self.filename_field.get(), self.file_extension_field.get(), self.owner_field.get(), self.licence_type_field.get(), self.resolution_field.get()))
+                self.ready_to_write = True
+                tkinter.messagebox.showinfo("Submission succesful", "Image metadata validated")
+
+                self.image_id_field.delete(0, END) #deletes text entry in fields. Dropdown menus stay the same as are likely to be the same when entering multiple image entries
+                self.filename_field.delete(0, END)
+                self.owner_field.delete(0, END)
+                self.resolution_field.delete(0, END)             
+            except:
+                tkinter.messagebox.showwarning("Error", "Make sure image resolution is numerical")
+        else:
+            tkinter.messagebox.showwarning("Error", "Please enter values for all fields")
 
     def writetocsv(self): #add if else for if has been validated
         file_name = "images.csv"
 
-        ofile = open(file_name, "w")
-        writer = csv.writer(ofile, delimiter=",")#, lineterminator="\n")
-        for record in self.recordlist:
-            writer.writerow([record.get_image_id(), record.get_filename(), record.get_file_extension(), record.get_owner(), record.get_licence_type(), record.get_resolution()])
-            ofile.close()
-            tkinter.messagebox.showinfo("file generated") # change to say file name
+        if self.ready_to_write == True:
+            ofile = open(file_name, "w")
+            writer = csv.writer(ofile, delimiter=",")#, lineterminator="\n")
+            for record in self.recordlist:
+                writer.writerow([record.get_image_id(), record.get_filename(), record.get_file_extension(), record.get_owner(), record.get_licence_type(), record.get_resolution()])
+                ofile.close()
+                tkinter.messagebox.showinfo("file generated", "file generated") # change to say file name
+        else:
+            tkinter.messagebox.showwarning("Error", "You need to validate your data before writing to csv")
+
+        ready_to_write = False
 
 # Main routine
 GUI() 
