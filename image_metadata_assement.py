@@ -45,6 +45,7 @@ class GUI:
         image_id_label.pack()
         self.image_id_field = Entry(window)
         self.image_id_field.pack()
+        self.image_id_field.focus()
 
         filename_label = Label(window, text="Enter filename:")
         filename_label.pack()
@@ -95,7 +96,7 @@ class GUI:
                 duplicate = True
             
         if duplicate == False:
-            if len(self.image_id_field.get()) >1 or len(self.filename_field.get()) > 1 or len(self.file_extension_field.get()) > 1 or len(self.owner_field.get()) > 1 or len(self.licence_type_field.get()) > 1 or len(self.resolution_field.get()) > 1:
+            if len(self.image_id_field.get()) > 0 and len(self.filename_field.get()) > 0 and len(self.file_extension_field.get()) > 0 and len(self.owner_field.get()) > 0 and len(self.licence_type_field.get()) > 0 and len(self.resolution_field.get()) > 0:
                 try:
                     validate_resolution = int(self.resolution_field.get())
                     self.recordlist.append(Image(self.image_id_field.get(), self.filename_field.get(), self.file_extension_field.get(), self.owner_field.get(), self.licence_type_field.get(), self.resolution_field.get()))
@@ -107,12 +108,13 @@ class GUI:
                     self.filename_field.delete(0, END)
                     self.owner_field.delete(0, END)
                     self.resolution_field.delete(0, END)
+                    self.image_id_field.focus()
                 except:
                     tkinter.messagebox.showwarning("Error", "Make sure image resolution is numerical")
             else:
                 tkinter.messagebox.showwarning("Error", "Please enter values for all fields")
 
-    def writetocsv(self): #add if else for if has been validated
+    def writetocsv(self):
         file_name = "images.csv"
 
         if self.ready_to_write == True:
@@ -126,7 +128,7 @@ class GUI:
         else:
             tkinter.messagebox.showwarning("Error", "You need to validate your data before writing to csv")
 
-        ready_to_write = False
+        self.ready_to_write = False
 
 # Main routine
 GUI() 
